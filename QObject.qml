@@ -34,6 +34,8 @@ import QtQuick 2.0
         Settings{ }
     }
     \endcode
+
+    \warning Just some qml Objects will have parent-child relation with QObject. Such as Timer.
 */
 
 QtObject {
