@@ -1,5 +1,5 @@
 /*
- * Copyright (c) <2015> <copyright qyvlik>
+ * Copyright (c) <2016> <copyright qyvlik>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,8 +41,7 @@ import QtQuick 2.0
 QtObject {
     id: qObject
 
-    /*!
-        \qmlproperty QtObject QObject::data
+    /*! \qmlproperty QtObject QObject::data
 
         An object definition can have a single default property. A default property is
         the property to which a value is assigned if an object is declared within another
@@ -55,5 +54,58 @@ QtObject {
 
     /*! \internal */
     property list<QtObject> __data
+
+    /*! \qmlmethod void QObject::insert(int index, Item item)
+        Inserts the item  ba at index position index.
+    */
+    function insert(index, item) {
+       __data = __qmlListPropertyInsert(__data, index, item);
+    }
+
+
+    /*! \qmlmethod Item QObject::remove(int index)
+        Removes item which at index from the data, and return remove item.
+    */
+    function remove(index) {
+        var removeItem = __data[index];
+        __qmlListPropertyRemove(__data, index);
+        return removeItem;
+    }
+
+    /*! \internal */
+    function __qmlListPropertyInsert(qmllistproperty, index, item) {
+        if(index > qmllistproperty.length) return qmllistproperty;
+        var  qmllistproperty_ = [];
+        var length = qmllistproperty.length + 1;
+
+        var flag = false;           // insert ?
+        for(var iter = 0; iter < length; iter++) {
+            if(iter === index) {
+                 qmllistproperty_.push(item);
+                flag = true;
+            } else {
+                if(flag) {
+                     qmllistproperty_.push(qmllistproperty[iter-1]);
+                } else {
+                     qmllistproperty_.push(qmllistproperty[iter]);
+                }
+            }
+        }
+        return qmllistproperty_;
+    }
+
+    /*! \internal */
+    function __qmlListPropertyRemove(qmllistproperty, index) {
+        if(index > qmllistproperty.length-1) return qmllistproperty;
+        var  qmllistproperty_ = [];
+        for(var iter in qmllistproperty) {
+            if(iter === index) {
+                continue;
+            } else {
+                 qmllistproperty_.push(qmllistproperty[iter]);
+            }
+        }
+        return qmllistproperty_;
+    }
 }
 

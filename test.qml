@@ -2,8 +2,8 @@ import QtQuick 2.0
 
 Rectangle {
     id: test
-    width: 100
-    height: 62
+    width: 400
+    height: 400
 
     QObject {
         id: qObject
